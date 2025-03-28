@@ -10,6 +10,8 @@ Color get buttonColor => Color(0xff3D5190);
 
 Color get divider => Color(0xff2F3134);
 
+Color get hoverCard => Color(0xbd0b0d19);
+
 Color get icyColor => Color(0xffBBBDC6);
 
 Color get black => const Color(0xFF000000);

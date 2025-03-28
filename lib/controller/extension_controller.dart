@@ -9,6 +9,8 @@ class ExtensionController extends GetxController{
   var isHoveredToDoBoxIndex = -1.obs;
   var isHoveredEditBtn = false.obs;
   var isHoveredDeleteBtn = false.obs;
+  var isHoveredCustomLinkBtn = false.obs;
+  var isHoveredWhereCustomLinkBtn = "".obs;
   var isExpanded = false.obs;
 
   void toggle() => isExpanded.value = !isExpanded.value;
