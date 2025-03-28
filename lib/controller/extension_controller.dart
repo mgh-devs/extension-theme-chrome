@@ -12,6 +12,7 @@ class ExtensionController extends GetxController{
   var isHoveredCustomLinkBtn = false.obs;
   var isHoveredWhereCustomLinkBtn = "".obs;
   var isExpanded = false.obs;
+  var isForecast = false.obs;
 
   void toggle() => isExpanded.value = !isExpanded.value;
 }

@@ -632,14 +632,14 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                   onEnter: (_) {
                                     controller.isHoveredCustomLinkBtn.value =
                                         true;
-                                    controller.isHoveredWhereCustomLinkBtn.value =
-                                        url;
+                                    controller.isHoveredWhereCustomLinkBtn
+                                        .value = url;
                                   },
                                   onExit: (_) {
                                     controller.isHoveredCustomLinkBtn.value =
                                         false;
-                                    controller.isHoveredWhereCustomLinkBtn.value =
-                                        '';
+                                    controller
+                                        .isHoveredWhereCustomLinkBtn.value = '';
                                   },
                                   child: GestureDetector(
                                     child: Container(
@@ -656,7 +656,11 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                             : cardBox,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Icon(Icons.add_rounded,color: icyColor,size: 30,),
+                                      child: Icon(
+                                        Icons.add_rounded,
+                                        color: icyColor,
+                                        size: 30,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -679,6 +683,288 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                         decoration: BoxDecoration(
                           color: cardBox,
                           borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                        right:
+                                            BorderSide(color: card, width: 1.5),
+                                      )),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "15:18",
+                                            style: TextStyle(
+                                              color: blueLight,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 40,
+                                            ),
+                                          ),
+                                          SizedBox(height: 35),
+                                          Text(
+                                            "Mar 28",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                          Text(
+                                            "2025",
+                                            style: TextStyle(
+                                              color: Colors.white54,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      color: Colors.transparent,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Image.asset(
+                                                "assets/png/cloud.png",
+                                                width: 50,
+                                                height: 50,
+                                              ),
+                                              Text(
+                                                "16°",
+                                                style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 30,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "Grab a juice! 🧃️",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "Min ",
+                                                      style: TextStyle(
+                                                        color: Colors.white60,
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: "15° ",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "Min ",
+                                                      style: TextStyle(
+                                                        color: Colors.white60,
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                    TextSpan(
+                                                      text: "15° ",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 10),
+                                          MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: Obx(() {
+                                              return GestureDetector(
+                                                onTap: () => controller
+                                                        .isForecast.value =
+                                                    !controller
+                                                        .isForecast.value,
+                                                child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 12,
+                                                      right: 12,
+                                                      bottom: 4,
+                                                      top: 2),
+                                                  alignment: Alignment.center,
+                                                  width: 75,
+                                                  decoration: BoxDecoration(
+                                                    color: controller
+                                                            .isForecast.value
+                                                        ? buttonColor
+                                                        : Colors.transparent,
+                                                    border: Border.all(
+                                                        color: divider,
+                                                        width: 1.5),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "Forcast",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10,
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        controller
+                                                                .isForecast.value
+                                                            ? Icons
+                                                                .keyboard_arrow_up_rounded
+                                                            : Icons
+                                                                .keyboard_arrow_down_rounded,
+                                                        color: Colors.white,
+                                                        size: 12,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                                child: Obx(
+                              () => controller.isForecast.value
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          top: BorderSide(
+                                              color: card, width: 1.5),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          '',
+                                          '',
+                                          '',
+                                          '',
+                                          '',
+                                        ]
+                                            .map(
+                                              (weather) => Container(
+                                                width: 60,
+                                                decoration: BoxDecoration(
+                                                  color: card,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(
+                                                      "Fri 29",
+                                                      style: TextStyle(
+                                                        color: Colors.white54,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 2.0),
+                                                      child: Image.asset(
+                                                        "assets/png/cloud.png",
+                                                        width: 25,
+                                                        height: 25,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "22°",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 2,
+                                                    ),
+                                                    Text(
+                                                      "10°",
+                                                      style: TextStyle(
+                                                        color: Colors.white54,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    )
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                        top:
+                                            BorderSide(color: card, width: 1.5),
+                                      )),
+                                    ),
+                            ))
+                          ],
                         ),
                       ),
                     ),

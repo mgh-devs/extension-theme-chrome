@@ -19,3 +19,5 @@ Color get black => const Color(0xFF000000);
 Color get blueGray => const Color(0xFF7880DD);
 
 Color get blueBlack => const Color(0xff121481);
+
+Color get blueLight => const Color(0xff4285F4);
