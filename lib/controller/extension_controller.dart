@@ -1,6 +1,7 @@
 
 
 import 'package:get/get.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class ExtensionController extends GetxController{
   var isVisiblyToDoList = false.obs;
@@ -13,6 +14,8 @@ class ExtensionController extends GetxController{
   var isHoveredWhereCustomLinkBtn = "".obs;
   var isExpanded = false.obs;
   var isForecast = false.obs;
+
+  Rx<Jalali> s=Jalali.now().obs;
 
   void toggle() => isExpanded.value = !isExpanded.value;
 }

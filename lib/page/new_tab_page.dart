@@ -4,9 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_tab_chrome/controller/extension_controller.dart';
 import 'package:new_tab_chrome/core/utils/colors.dart';
+import 'package:new_tab_chrome/core/widgets/pkg/calender/src/extensions/string.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+
+
+import '../core/widgets/pkg/calender/src/table_calendar_jalali.dart';
+
 
 class NewTabPage extends GetResponsiveView<ExtensionController> {
   @override
+
   Widget? desktop() {
     // TODO: implement desktop
     return Scaffold(
@@ -977,6 +984,23 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                           color: cardBox,
                           borderRadius: BorderRadius.circular(10),
                         ),
+                        child:Obx(()=>JalaliTableCalendar(
+                          currentMonth: Jalali.now(),
+                          headerStyle: TextStyle(color: Colors.white),
+                          weekDaysStyle: TextStyle(fontSize: 12,color: Colors.white),
+                          selectedDay: controller.s.value,
+                          onDaySelected: (date) {
+                            print('Selected date: $date');
+                            controller.s.value = date;
+                          },
+                          headerText: (date) {
+                            return '${date.formatter.mN} ${date.year}'.toFarsiNumber();
+                          },
+                          onMonthChanged: (date) {
+                            // Handle month change
+                            print('Current month: $date');
+                          },
+                        ),),
                       ),
                     ),
                     const SizedBox(
