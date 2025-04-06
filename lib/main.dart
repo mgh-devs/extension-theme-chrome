@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_tab_chrome/page/new_tab_page.dart';
+import 'package:new_tab_chrome/views/new_tab_page.dart';
 
 import 'core/services/binding.dart';
 

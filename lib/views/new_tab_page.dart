@@ -7,13 +7,10 @@ import 'package:new_tab_chrome/core/utils/colors.dart';
 import 'package:new_tab_chrome/core/widgets/pkg/calender/src/extensions/string.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-
 import '../core/widgets/pkg/calender/src/table_calendar_jalali.dart';
-
 
 class NewTabPage extends GetResponsiveView<ExtensionController> {
   @override
-
   Widget? desktop() {
     // TODO: implement desktop
     return Scaffold(
@@ -520,7 +517,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                           controller.isVisiblyToDoList.value,
                                       child: Positioned.fill(
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.only(
+                                          borderRadius: const BorderRadius.only(
                                             bottomRight: Radius.circular(10),
                                             bottomLeft: Radius.circular(10),
                                           ),
@@ -529,7 +526,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                 sigmaX: 10, sigmaY: 10),
                                             child: Container(
                                               width: screen.width,
-                                              decoration: BoxDecoration(
+                                              decoration: const BoxDecoration(
                                                 color: Colors.transparent,
                                                 borderRadius: BorderRadius.only(
                                                   bottomRight:
@@ -715,8 +712,8 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                               fontSize: 40,
                                             ),
                                           ),
-                                          SizedBox(height: 35),
-                                          Text(
+                                          const SizedBox(height: 35),
+                                          const Text(
                                             "Mar 28",
                                             style: TextStyle(
                                               color: Colors.white,
@@ -724,7 +721,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                               fontSize: 15,
                                             ),
                                           ),
-                                          Text(
+                                          const Text(
                                             "2025",
                                             style: TextStyle(
                                               color: Colors.white54,
@@ -751,7 +748,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                 width: 50,
                                                 height: 50,
                                               ),
-                                              Text(
+                                              const Text(
                                                 "16°",
                                                 style: TextStyle(
                                                   color: Colors.white54,
@@ -761,8 +758,8 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 10),
-                                          Text(
+                                          const SizedBox(height: 10),
+                                          const Text(
                                             "Grab a juice! 🧃️",
                                             style: TextStyle(
                                               color: Colors.white,
@@ -770,13 +767,13 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                               fontSize: 12,
                                             ),
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
                                               RichText(
-                                                text: TextSpan(
+                                                text: const TextSpan(
                                                   children: [
                                                     TextSpan(
                                                       text: "Min ",
@@ -796,7 +793,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                 ),
                                               ),
                                               RichText(
-                                                text: TextSpan(
+                                                text: const TextSpan(
                                                   children: [
                                                     TextSpan(
                                                       text: "Min ",
@@ -817,7 +814,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           MouseRegion(
                                             cursor: SystemMouseCursors.click,
                                             child: Obx(() {
@@ -827,11 +824,12 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                     !controller
                                                         .isForecast.value,
                                                 child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 12,
-                                                      right: 12,
-                                                      bottom: 4,
-                                                      top: 2),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 12,
+                                                          right: 12,
+                                                          bottom: 4,
+                                                          top: 2),
                                                   alignment: Alignment.center,
                                                   width: 75,
                                                   decoration: BoxDecoration(
@@ -848,7 +846,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                   ),
                                                   child: Row(
                                                     children: [
-                                                      Text(
+                                                      const Text(
                                                         "Forcast",
                                                         style: TextStyle(
                                                           color: Colors.white,
@@ -910,10 +908,10 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       height: 10,
                                                     ),
-                                                    Text(
+                                                    const Text(
                                                       "Fri 29",
                                                       style: TextStyle(
                                                         color: Colors.white54,
@@ -932,7 +930,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                         height: 25,
                                                       ),
                                                     ),
-                                                    Text(
+                                                    const Text(
                                                       "22°",
                                                       style: TextStyle(
                                                         color: Colors.white,
@@ -941,10 +939,10 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                             FontWeight.bold,
                                                       ),
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       height: 2,
                                                     ),
-                                                    Text(
+                                                    const Text(
                                                       "10°",
                                                       style: TextStyle(
                                                         color: Colors.white54,
@@ -953,7 +951,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                             FontWeight.bold,
                                                       ),
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       height: 20,
                                                     ),
                                                   ],
@@ -965,10 +963,57 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                     )
                                   : Container(
                                       decoration: BoxDecoration(
-                                          border: Border(
-                                        top:
-                                            BorderSide(color: card, width: 1.5),
-                                      )),
+                                        border: Border(
+                                          top: BorderSide(
+                                              color: card, width: 1.5),
+                                        ),
+                                      ),
+                                      child: Obx(() => controller
+                                              .isGetEventDayLoading.value
+                                          ? const CircularProgressIndicator()
+                                          : ListView.builder(
+                                              itemCount: controller
+                                                      .responseEventDay
+                                                      .events
+                                                      .isNotEmpty
+                                                  ? controller.responseEventDay
+                                                      .events.length
+                                                  : 0,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(left: 8,right: 8,bottom: 5,top: 3),
+                                                  child: Directionality(
+                                                    textDirection: TextDirection.rtl,
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            style: TextStyle(fontSize: 12,color: Colors.white,fontFamily: 'vazir'),
+                                                            text:controller.responseEventDay.events[index].description??"",
+                                                          ),
+                                                          TextSpan(
+                                                            style: TextStyle(fontSize: 12,color: Colors.red.shade700,fontFamily: 'vazir'),
+                                                            text:controller.responseEventDay.events[index].isHoliday!?"(تعطیل)":"",
+                                                          ),
+                                                        ]
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  // child: Text(
+                                                  //   controller
+                                                  //           .responseEventDay
+                                                  //           .events[index]
+                                                  //           .description ??
+                                                  //       "",
+                                                  //   textAlign: TextAlign.right,
+                                                  //   style: const TextStyle(
+                                                  //     color: Colors.white,
+                                                  //   ),
+                                                  // ),
+                                                );
+                                              },
+                                            )),
                                     ),
                             ))
                           ],
@@ -984,23 +1029,32 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                           color: cardBox,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child:Obx(()=>JalaliTableCalendar(
-                          currentMonth: Jalali.now(),
-                          headerStyle: TextStyle(color: Colors.white),
-                          weekDaysStyle: TextStyle(fontSize: 12,color: Colors.white),
-                          selectedDay: controller.s.value,
-                          onDaySelected: (date) {
-                            print('Selected date: $date');
-                            controller.s.value = date;
-                          },
-                          headerText: (date) {
-                            return '${date.formatter.mN} ${date.year}'.toFarsiNumber();
-                          },
-                          onMonthChanged: (date) {
-                            // Handle month change
-                            print('Current month: $date');
-                          },
-                        ),),
+                        child: Obx(
+                          () => JalaliTableCalendar(
+                            currentMonth: Jalali.now(),
+                            headerStyle: const TextStyle(color: Colors.white),
+                            weekDaysStyle: const TextStyle(
+                                fontSize: 12, color: Colors.white),
+                            selectedDay: controller.s.value,
+                            onDaySelected: (date) {
+                              print('Selected date: $date');
+                              controller.s.value = date;
+                              controller.getEventDay(
+                                year: date.year.toString(),
+                                month: date.month.toString(),
+                                day: date.day.toString(),
+                              );
+                            },
+                            headerText: (date) {
+                              return '${date.formatter.mN} ${date.year}'
+                                  .toFarsiNumber();
+                            },
+                            onMonthChanged: (date) {
+                              // Handle month change
+                              print('Current month: $date');
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(
