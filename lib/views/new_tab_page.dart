@@ -3,8 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_tab_chrome/controller/extension_controller.dart';
+import 'package:new_tab_chrome/core/services/hive_service.dart';
 import 'package:new_tab_chrome/core/utils/colors.dart';
 import 'package:new_tab_chrome/core/widgets/pkg/calender/src/extensions/string.dart';
+import 'package:new_tab_chrome/models/response_todo_list_model.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../core/widgets/pkg/calender/src/table_calendar_jalali.dart';
@@ -155,238 +157,268 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                         color: divider,
                                       ),
                                       Expanded(
-                                        child: ListView.builder(
-                                          itemCount: 15,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Obx(() {
-                                                return MouseRegion(
-                                                  onEnter: (_) {
-                                                    controller.isHoveredToDoBox
-                                                        .value = true;
-                                                    controller
-                                                            .isHoveredToDoBoxIndex =
-                                                        index;
-                                                  },
-                                                  onExit: (_) {
-                                                    controller.isHoveredToDoBox
-                                                        .value = false;
-                                                    controller
-                                                        .isHoveredToDoBoxIndex = -1;
-                                                  },
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: card),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  top: 10,
-                                                                  left: 10,
-                                                                  right: 10),
-                                                          child: Row(
-                                                            children: [
-                                                              Container(
-                                                                width: 15,
-                                                                height: 15,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .yellow
-                                                                      .withOpacity(
-                                                                          0.3),
-                                                                  border: Border.all(
-                                                                      color: Colors
-                                                                          .yellow),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              4),
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              const Text(
-                                                                "show it",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        16),
-                                                              ),
-                                                              const Spacer(),
-                                                              Visibility(
-                                                                visible: controller
-                                                                        .isHoveredToDoBox
-                                                                        .value &&
-                                                                    controller
-                                                                            .isHoveredToDoBoxIndex ==
-                                                                        index,
-                                                                child: Row(
-                                                                  children: [
-                                                                    MouseRegion(
-                                                                      onEnter: (_) => controller
-                                                                          .isHoveredEditBtn
-                                                                          .value = true,
-                                                                      onExit: (_) => controller
-                                                                          .isHoveredEditBtn
-                                                                          .value = false,
-                                                                      child:
-                                                                          Container(
-                                                                        width:
-                                                                            20,
-                                                                        height:
-                                                                            20,
-                                                                        margin: const EdgeInsets
-                                                                            .symmetric(
-                                                                            vertical:
-                                                                                5),
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              card,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(5),
-                                                                        ),
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .edit_outlined,
-                                                                          color: controller.isHoveredEditBtn.value
-                                                                              ? buttonColor
-                                                                              : icyColor,
-                                                                          size:
-                                                                              15,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 10,
-                                                                    ),
-                                                                    MouseRegion(
-                                                                      onEnter: (_) => controller
-                                                                          .isHoveredDeleteBtn
-                                                                          .value = true,
-                                                                      onExit: (_) => controller
-                                                                          .isHoveredDeleteBtn
-                                                                          .value = false,
-                                                                      child:
-                                                                          Container(
-                                                                        width:
-                                                                            20,
-                                                                        height:
-                                                                            20,
-                                                                        margin: const EdgeInsets
-                                                                            .symmetric(
-                                                                            vertical:
-                                                                                5),
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              card,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(5),
-                                                                        ),
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .delete_outline,
-                                                                          color: controller.isHoveredDeleteBtn.value
-                                                                              ? Colors.red
-                                                                              : icyColor,
-                                                                          size:
-                                                                              15,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      10),
-                                                          child: Container(
-                                                            width: 20,
-                                                            height: 20,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        5),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: card,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5),
-                                                            ),
-                                                            child: Icon(
-                                                              Icons
-                                                                  .dataset_outlined,
-                                                              color:
-                                                                  buttonColor,
-                                                              size: 15,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Visibility(
-                                                          visible: index == 1,
-                                                          child: Container(
-                                                            width: screen.width,
+                                        child: Obx(() {
+                                          return ListView.builder(
+                                            itemCount: controller.tasks.length,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Obx(() {
+                                                  return MouseRegion(
+                                                    onEnter: (_) {
+                                                      controller
+                                                          .isHoveredToDoBox
+                                                          .value = true;
+                                                      controller
+                                                              .isHoveredToDoBoxIndex =
+                                                          index;
+                                                    },
+                                                    onExit: (_) {
+                                                      controller
+                                                          .isHoveredToDoBox
+                                                          .value = false;
+                                                      controller
+                                                          .isHoveredToDoBoxIndex = -1;
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color: card),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                    .all(8),
-                                                            decoration: BoxDecoration(
-                                                                color: card,
-                                                                borderRadius: const BorderRadius
                                                                     .only(
-                                                                    bottomLeft:
-                                                                        Radius.circular(
-                                                                            9),
-                                                                    bottomRight:
-                                                                        Radius.circular(
-                                                                            9))),
-                                                            child: const Column(
+                                                                    top: 10,
+                                                                    left: 10,
+                                                                    right: 10),
+                                                            child: Row(
                                                               children: [
+                                                                Container(
+                                                                  width: 15,
+                                                                  height: 15,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: controller
+                                                                        .tasks[index]
+                                                                        .color.withOpacity(0.2),
+                                                                    border: Border.all(
+                                                                        color: controller
+                                                                            .tasks[index]
+                                                                            .color),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(4),
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(
+                                                                  width: 10,
+                                                                ),
                                                                 Text(
-                                                                  "dasdadassadhjashjdhjahdjafdsjfskldjfldjfksdljflkdsjfkljfldsjfljklfdslfjljdsjfldsjljdflksdjldfjslhaslhdlahsdlkaslhd",
+                                                                  controller
+                                                                      .tasks[
+                                                                          index]
+                                                                      .title,
                                                                   style: TextStyle(
                                                                       color: Colors
                                                                           .white,
                                                                       fontSize:
-                                                                          12),
-                                                                )
+                                                                          16),
+                                                                ),
+                                                                const Spacer(),
+                                                                Visibility(
+                                                                  visible: controller
+                                                                          .isHoveredToDoBox
+                                                                          .value &&
+                                                                      controller
+                                                                              .isHoveredToDoBoxIndex ==
+                                                                          index,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      MouseRegion(
+                                                                        onEnter: (_) => controller
+                                                                            .isHoveredEditBtn
+                                                                            .value = true,
+                                                                        onExit: (_) => controller
+                                                                            .isHoveredEditBtn
+                                                                            .value = false,
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              20,
+                                                                          height:
+                                                                              20,
+                                                                          margin: const EdgeInsets
+                                                                              .symmetric(
+                                                                              vertical: 5),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                card,
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(5),
+                                                                          ),
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.edit_outlined,
+                                                                            color: controller.isHoveredEditBtn.value
+                                                                                ? buttonColor
+                                                                                : icyColor,
+                                                                            size:
+                                                                                15,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      MouseRegion(
+                                                                        onEnter: (_) => controller
+                                                                            .isHoveredDeleteBtn
+                                                                            .value = true,
+                                                                        onExit: (_) => controller
+                                                                            .isHoveredDeleteBtn
+                                                                            .value = false,
+                                                                        child:
+                                                                            Container(
+                                                                          width:
+                                                                              20,
+                                                                          height:
+                                                                              20,
+                                                                          margin: const EdgeInsets
+                                                                              .symmetric(
+                                                                              vertical: 5),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                card,
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(5),
+                                                                          ),
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.delete_outline,
+                                                                            color: controller.isHoveredDeleteBtn.value
+                                                                                ? Colors.red
+                                                                                : icyColor,
+                                                                            size:
+                                                                                15,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
                                                               ],
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        10),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                if (controller
+                                                                    .selectedShowDescription
+                                                                    .contains(
+                                                                        index)) {
+                                                                  controller
+                                                                      .selectedShowDescription
+                                                                      .remove(
+                                                                          index);
+                                                                } else {
+                                                                  controller
+                                                                      .selectedShowDescription
+                                                                      .add(
+                                                                          index);
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                width: 20,
+                                                                height: 20,
+                                                                margin: const EdgeInsets
+                                                                    .symmetric(
+                                                                    vertical:
+                                                                        5),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: card,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5),
+                                                                ),
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .dataset_outlined,
+                                                                  color:
+                                                                      buttonColor,
+                                                                  size: 15,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Obx(
+                                                             () {
+                                                              return Visibility(
+                                                                visible:controller.selectedShowDescription.contains(index),
+                                                                child: Container(
+                                                                  width:
+                                                                      screen.width,
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(8),
+                                                                  decoration: BoxDecoration(
+                                                                      color: card,
+                                                                      borderRadius: const BorderRadius
+                                                                          .only(
+                                                                          bottomLeft:
+                                                                              Radius.circular(
+                                                                                  9),
+                                                                          bottomRight:
+                                                                              Radius.circular(
+                                                                                  9))),
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Text(
+                                                                        controller
+                                                                            .tasks[
+                                                                                index]
+                                                                            .description,
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .white,
+                                                                            fontSize:
+                                                                                12),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              }),
-                                            );
-                                          },
-                                        ),
+                                                  );
+                                                }),
+                                              );
+                                            },
+                                          );
+                                        }),
                                       ),
                                       Divider(
                                         color: divider,
@@ -402,7 +434,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                 milliseconds: 300),
                                             // زمان انیمیشن
                                             height: controller.isExpanded.value
-                                                ? 100
+                                                ? 130
                                                 : 50,
                                             // تغییر ارتفاع هنگام کلیک
                                             decoration: BoxDecoration(
@@ -436,29 +468,83 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                                           card),
                                                             ),
                                                             child:
-                                                                const SingleChildScrollView(
-                                                              child: Column(
-                                                                children: [
-                                                                  TextField(
-                                                                    decoration:
-                                                                        InputDecoration(
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintText:
-                                                                          "Add a new task Title",
+                                                                SingleChildScrollView(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Column(
+                                                                  children: [
+                                                                    TextField(
+                                                                      controller: controller.titleTextEditingController,
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        border:
+                                                                            InputBorder.none,
+                                                                        hintStyle: TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            color:
+                                                                                blueGray.withOpacity(.5)),
+                                                                        hintText:
+                                                                            "Add a new task Title",
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                  TextField(
-                                                                    maxLines: 2,
-                                                                    decoration:
-                                                                        InputDecoration(
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintText:
-                                                                          "More details...",
+                                                                    TextField(
+                                                                      controller: controller.descriptionTextEditingController,
+                                                                      maxLines:
+                                                                          2,
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        border:
+                                                                            InputBorder.none,
+                                                                        hintStyle:
+                                                                            TextStyle(fontSize: 10),
+                                                                        hintText:
+                                                                            "More details...",
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ],
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .end,
+                                                                      children: [
+                                                                        Colors
+                                                                            .red,
+                                                                        Colors
+                                                                            .green,
+                                                                        Colors
+                                                                            .yellow
+                                                                      ]
+                                                                          .map(
+                                                                            (color) =>
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.symmetric(horizontal: 3),
+                                                                              child: MouseRegion(
+                                                                                cursor: SystemMouseCursors.click,
+                                                                                child: GestureDetector(
+                                                                                  onTap: () {
+                                                                                    controller.selectedColor.value = color;
+                                                                                  },
+                                                                                  child: Obx(() {
+                                                                                    return Container(
+                                                                                      width: 10,
+                                                                                      height: 10,
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(2),
+                                                                                        color: controller.selectedColor.value == color ? color : color.withOpacity(0.3),
+                                                                                      ),
+                                                                                    );
+                                                                                  }),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                          .toList(),
+                                                                    )
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -467,20 +553,43 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                           width: 5,
                                                         ),
                                                         Expanded(
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color:
-                                                                  buttonColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                            child: Center(
-                                                              child: Icon(
-                                                                Icons.add,
-                                                                color: icyColor,
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              HiveServices
+                                                                  .addTask(
+                                                                ToDoListModel(
+                                                                  title: controller
+                                                                      .titleTextEditingController
+                                                                      .text,
+                                                                  description:
+                                                                      controller
+                                                                          .descriptionTextEditingController
+                                                                          .text,
+                                                                  color: controller
+                                                                      .selectedColor
+                                                                      .value,
+                                                                ),
+                                                              );
+                                                              controller
+                                                                  .getAllTasks();
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color:
+                                                                    buttonColor,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Center(
+                                                                child: Icon(
+                                                                  Icons.add,
+                                                                  color:
+                                                                      icyColor,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
@@ -584,15 +693,23 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                   color: buttonColor,
                                   borderRadius: BorderRadius.circular(50),
                                 ),
-                                child: const Icon(
-                                  Icons.search,
-                                  color: Colors.white,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    controller.getAllTasks();
+                                  },
+                                  child: const Icon(
+                                    Icons.search,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                            const Icon(
-                              Icons.mic,
-                              color: Colors.white,
+                            GestureDetector(
+                              onTap: () {},
+                              child: const Icon(
+                                Icons.mic,
+                                color: Colors.white,
+                              ),
                             ),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -970,7 +1087,9 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                       ),
                                       child: Obx(() => controller
                                               .isGetEventDayLoading.value
-                                          ? const CircularProgressIndicator()
+                                          ? Center(
+                                              child:
+                                                  const CircularProgressIndicator())
                                           : ListView.builder(
                                               itemCount: controller
                                                       .responseEventDay
@@ -982,22 +1101,44 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                               itemBuilder: (context, index) {
                                                 return Padding(
                                                   padding:
-                                                      const EdgeInsets.only(left: 8,right: 8,bottom: 5,top: 3),
+                                                      const EdgeInsets.only(
+                                                          left: 8,
+                                                          right: 8,
+                                                          bottom: 5,
+                                                          top: 3),
                                                   child: Directionality(
-                                                    textDirection: TextDirection.rtl,
+                                                    textDirection:
+                                                        TextDirection.rtl,
                                                     child: RichText(
-                                                      text: TextSpan(
-                                                        children: [
-                                                          TextSpan(
-                                                            style: TextStyle(fontSize: 12,color: Colors.white,fontFamily: 'vazir'),
-                                                            text:controller.responseEventDay.events[index].description??"",
-                                                          ),
-                                                          TextSpan(
-                                                            style: TextStyle(fontSize: 12,color: Colors.red.shade700,fontFamily: 'vazir'),
-                                                            text:controller.responseEventDay.events[index].isHoliday!?"(تعطیل)":"",
-                                                          ),
-                                                        ]
-                                                      ),
+                                                      text: TextSpan(children: [
+                                                        TextSpan(
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  'vazir'),
+                                                          text: controller
+                                                                  .responseEventDay
+                                                                  .events[index]
+                                                                  .description ??
+                                                              "",
+                                                        ),
+                                                        TextSpan(
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              color: Colors
+                                                                  .red.shade700,
+                                                              fontFamily:
+                                                                  'vazir'),
+                                                          text: controller
+                                                                  .responseEventDay
+                                                                  .events[index]
+                                                                  .isHoliday!
+                                                              ? "(تعطیل)"
+                                                              : "",
+                                                        ),
+                                                      ]),
                                                     ),
                                                   ),
                                                   // child: Text(

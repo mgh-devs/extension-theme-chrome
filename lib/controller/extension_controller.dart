@@ -1,7 +1,13 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_tab_chrome/core/services/hive_service.dart';
 import 'package:new_tab_chrome/models/response_event_day_model.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+
+import '../models/response_todo_list_model.dart';
 
 class ExtensionController extends GetxController {
   @override
@@ -11,6 +17,7 @@ class ExtensionController extends GetxController {
       month: Jalali.now().month.toString(),
       day: Jalali.now().day.toString(),
     );
+    getAllTasks();
     super.onInit();
   }
 
@@ -29,6 +36,16 @@ class ExtensionController extends GetxController {
   Rx<Jalali> s = Jalali.now().obs;
   ResponseEventDayModel responseEventDay =
       ResponseEventDayModel(isHoliday: false, events: []);
+  RxList<ToDoListModel> tasks=<ToDoListModel>[].obs;
+  Rx<Color> selectedColor=Colors.red.obs;
+  final  titleTextEditingController=TextEditingController();
+  final  descriptionTextEditingController=TextEditingController();
+  RxList<int>selectedShowDescription=<int>[].obs;
+
+
+
+
+
 
   void toggle() => isExpanded.value = !isExpanded.value;
 
@@ -49,4 +66,10 @@ class ExtensionController extends GetxController {
       isGetEventDayLoading.value = false;
     }
   }
+
+
+  void getAllTasks(){
+    tasks.assignAll(HiveServices.getAllTasks);
+  }
+
 }

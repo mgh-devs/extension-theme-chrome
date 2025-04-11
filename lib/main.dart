@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:new_tab_chrome/views/new_tab_page.dart';
 
 import 'core/services/binding.dart';
+import 'core/services/hive_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveServices.init();
   runApp(const MyApp());
 }
 

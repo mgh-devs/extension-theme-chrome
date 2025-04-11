@@ -38,6 +38,10 @@ dependencies:
   get: ^4.7.2
   persian_datetime_picker: ^3.1.0
   dio: ^5.8.0+1
+  hive_ce_flutter: ^2.1.0
+  hive_ce: ^2.10.1
+  build_runner: ^2.4.13
+  hive_ce_generator: ^1.8.1
 
 
 
