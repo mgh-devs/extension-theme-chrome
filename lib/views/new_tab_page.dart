@@ -8,7 +8,7 @@ import 'package:new_tab_chrome/core/utils/colors.dart';
 import 'package:new_tab_chrome/core/widgets/pkg/calender/src/extensions/string.dart';
 import 'package:new_tab_chrome/models/response_todo_list_model.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
-
+import 'package:intl/intl.dart' as inh;
 import '../core/widgets/pkg/calender/src/table_calendar_jalali.dart';
 
 class NewTabPage extends GetResponsiveView<ExtensionController> {
@@ -209,8 +209,11 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                                   decoration:
                                                                       BoxDecoration(
                                                                     color: controller
-                                                                        .tasks[index]
-                                                                        .color.withOpacity(0.2),
+                                                                        .tasks[
+                                                                            index]
+                                                                        .color
+                                                                        .withOpacity(
+                                                                            0.2),
                                                                     border: Border.all(
                                                                         color: controller
                                                                             .tasks[index]
@@ -371,45 +374,45 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                               ),
                                                             ),
                                                           ),
-                                                          Obx(
-                                                             () {
-                                                              return Visibility(
-                                                                visible:controller.selectedShowDescription.contains(index),
-                                                                child: Container(
-                                                                  width:
-                                                                      screen.width,
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(8),
-                                                                  decoration: BoxDecoration(
-                                                                      color: card,
-                                                                      borderRadius: const BorderRadius
-                                                                          .only(
-                                                                          bottomLeft:
-                                                                              Radius.circular(
-                                                                                  9),
-                                                                          bottomRight:
-                                                                              Radius.circular(
-                                                                                  9))),
-                                                                  child: Column(
-                                                                    children: [
-                                                                      Text(
-                                                                        controller
-                                                                            .tasks[
-                                                                                index]
-                                                                            .description,
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .white,
-                                                                            fontSize:
-                                                                                12),
-                                                                      )
-                                                                    ],
-                                                                  ),
+                                                          Obx(() {
+                                                            return Visibility(
+                                                              visible: controller
+                                                                  .selectedShowDescription
+                                                                  .contains(
+                                                                      index),
+                                                              child: Container(
+                                                                width: screen
+                                                                    .width,
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(8),
+                                                                decoration: BoxDecoration(
+                                                                    color: card,
+                                                                    borderRadius: const BorderRadius
+                                                                        .only(
+                                                                        bottomLeft:
+                                                                            Radius.circular(
+                                                                                9),
+                                                                        bottomRight:
+                                                                            Radius.circular(9))),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Text(
+                                                                      controller
+                                                                          .tasks[
+                                                                              index]
+                                                                          .description,
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              12),
+                                                                    )
+                                                                  ],
                                                                 ),
-                                                              );
-                                                            }
-                                                          ),
+                                                              ),
+                                                            );
+                                                          }),
                                                         ],
                                                       ),
                                                     ),
@@ -477,7 +480,9 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                                 child: Column(
                                                                   children: [
                                                                     TextField(
-                                                                      controller: controller.titleTextEditingController,
+                                                                      controller:
+                                                                          controller
+                                                                              .titleTextEditingController,
                                                                       decoration:
                                                                           InputDecoration(
                                                                         border:
@@ -492,7 +497,9 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                                                       ),
                                                                     ),
                                                                     TextField(
-                                                                      controller: controller.descriptionTextEditingController,
+                                                                      controller:
+                                                                          controller
+                                                                              .descriptionTextEditingController,
                                                                       maxLines:
                                                                           2,
                                                                       decoration:
@@ -821,25 +828,31 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            "15:18",
-                                            style: TextStyle(
-                                              color: blueLight,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 40,
-                                            ),
-                                          ),
+                                          Obx(() {
+                                            return Text(
+                                              controller.clock.value,
+                                              style: TextStyle(
+                                                color: blueLight,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 40,
+                                              ),
+                                            );
+                                          }),
                                           const SizedBox(height: 35),
-                                          const Text(
-                                            "Mar 28",
+                                          Text(
+                                            inh.DateFormat('MMMM dd', 'en_US')
+                                                    .format(DateTime.now()) ??
+                                                '${Jalali.now().formatter.mN} ${Jalali.now().formatter.d}',
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15,
                                             ),
                                           ),
-                                          const Text(
-                                            "2025",
+                                          Text(
+                                            inh.DateFormat('yyyy', 'en_US')
+                                                    .format(DateTime.now()) ??
+                                                "${Jalali.now().year}",
                                             style: TextStyle(
                                               color: Colors.white54,
                                               fontSize: 12,
@@ -852,142 +865,170 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                   Expanded(
                                     child: Container(
                                       color: Colors.transparent,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Image.asset(
-                                                "assets/png/cloud.png",
-                                                width: 50,
-                                                height: 50,
-                                              ),
-                                              const Text(
-                                                "16°",
-                                                style: TextStyle(
-                                                  color: Colors.white54,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 30,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          const Text(
-                                            "Grab a juice! 🧃️",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              RichText(
-                                                text: const TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "Min ",
-                                                      style: TextStyle(
-                                                        color: Colors.white60,
-                                                        fontSize: 10,
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: "15° ",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              RichText(
-                                                text: const TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: "Min ",
-                                                      style: TextStyle(
-                                                        color: Colors.white60,
-                                                        fontSize: 10,
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: "15° ",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          MouseRegion(
-                                            cursor: SystemMouseCursors.click,
-                                            child: Obx(() {
-                                              return GestureDetector(
-                                                onTap: () => controller
-                                                        .isForecast.value =
-                                                    !controller
-                                                        .isForecast.value,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 12,
-                                                          right: 12,
-                                                          bottom: 4,
-                                                          top: 2),
-                                                  alignment: Alignment.center,
-                                                  width: 75,
-                                                  decoration: BoxDecoration(
-                                                    color: controller
-                                                            .isForecast.value
-                                                        ? buttonColor
-                                                        : Colors.transparent,
-                                                    border: Border.all(
-                                                        color: divider,
-                                                        width: 1.5),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                  child: Row(
+                                      child: Obx(() {
+                                        return controller
+                                                .isGetWeatherLoading.value
+                                            ? CircularProgressIndicator()
+                                            : Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: [
-                                                      const Text(
-                                                        "Forcast",
+                                                      Image.asset(
+                                                        "assets/png/cloud.png",
+                                                        width: 50,
+                                                        height: 50,
+                                                      ),
+                                                      Text(
+                                                        "${controller.weather?.currentWeather?.temperature?.toStringAsFixed(0)}°",
                                                         style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 10,
+                                                          color: Colors.white54,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 30,
                                                         ),
                                                       ),
-                                                      Icon(
-                                                        controller
-                                                                .isForecast.value
-                                                            ? Icons
-                                                                .keyboard_arrow_up_rounded
-                                                            : Icons
-                                                                .keyboard_arrow_down_rounded,
-                                                        color: Colors.white,
-                                                        size: 12,
-                                                      )
                                                     ],
                                                   ),
-                                                ),
+                                                  const SizedBox(height: 10),
+                                                  const Text(
+                                                    "Grab a juice! 🧃️",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: "Min ",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white60,
+                                                                fontSize: 10,
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text:
+                                                                  "${controller.weather?.daily?.temperature2MMin.first.toStringAsFixed(0)}° ",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 10,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      RichText(
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: "Max ",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white60,
+                                                                fontSize: 10,
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text:
+                                                                  "${controller.weather?.daily?.temperature2MMax.first.toStringAsFixed(0)}° ",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 10,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  MouseRegion(
+                                                    cursor: SystemMouseCursors
+                                                        .click,
+                                                    child: Obx(() {
+                                                      return GestureDetector(
+                                                        onTap: () => controller
+                                                                .isForecast
+                                                                .value =
+                                                            !controller
+                                                                .isForecast
+                                                                .value,
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 12,
+                                                                  right: 12,
+                                                                  bottom: 4,
+                                                                  top: 2),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          width: 75,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: controller
+                                                                    .isForecast
+                                                                    .value
+                                                                ? buttonColor
+                                                                : Colors
+                                                                    .transparent,
+                                                            border: Border.all(
+                                                                color: divider,
+                                                                width: 1.5),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50),
+                                                          ),
+                                                          child: Row(
+                                                            children: [
+                                                              const Text(
+                                                                "Forcast",
+                                                                style:
+                                                                    TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 10,
+                                                                ),
+                                                              ),
+                                                              Icon(
+                                                                controller
+                                                                        .isForecast
+                                                                        .value
+                                                                    ? Icons
+                                                                        .keyboard_arrow_up_rounded
+                                                                    : Icons
+                                                                        .keyboard_arrow_down_rounded,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 12,
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }),
+                                                  )
+                                                ],
                                               );
-                                            }),
-                                          )
-                                        ],
-                                      ),
+                                      }),
                                     ),
                                   ),
                                 ],
@@ -1003,79 +1044,77 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                               color: card, width: 1.5),
                                         ),
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                      child: Column(
                                         children: [
-                                          '',
-                                          '',
-                                          '',
-                                          '',
-                                          '',
-                                        ]
-                                            .map(
-                                              (weather) => Container(
-                                                width: 60,
-                                                decoration: BoxDecoration(
-                                                  color: card,
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    const SizedBox(
-                                                      height: 10,
+                                          Expanded(
+                                            child: ListView.builder(
+                                              itemCount: controller.weather!.daily!.time.length-2,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding: const EdgeInsets.only(left: 4,right:4),
+                                                  child: Container(
+                                                    width: 60,
+                                                    height: 130,
+                                                    decoration: BoxDecoration(
+                                                      color: card,
+                                                      borderRadius:
+                                                          BorderRadius.circular(15),
                                                     ),
-                                                    const Text(
-                                                      "Fri 29",
-                                                      style: TextStyle(
-                                                        color: Colors.white54,
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                         Text(
+                                                          controller.convertDate(controller.weather!.daily!.time[index].toString(),isJalali: true),
+                                                          style: TextStyle(
+                                                            color: Colors.white54,
+                                                            fontSize: 10,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets
+                                                              .symmetric(vertical: 2.0),
+                                                          child: Image.asset(
+                                                            "assets/png/cloud.png",
+                                                            width: 25,
+                                                            height: 25,
+                                                          ),
+                                                        ),
+                                                         Text(
+                                                          "${controller.weather?.daily?.temperature2MMax[index].toStringAsFixed(0)}°",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 2,
+                                                        ),
+                                                         Text(
+                                                          "${controller.weather?.daily?.temperature2MMin[index].toStringAsFixed(0)}°",
+                                                          style: TextStyle(
+                                                            color: Colors.white54,
+                                                            fontSize: 10,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 2.0),
-                                                      child: Image.asset(
-                                                        "assets/png/cloud.png",
-                                                        width: 25,
-                                                        height: 25,
-                                                      ),
-                                                    ),
-                                                    const Text(
-                                                      "22°",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 2,
-                                                    ),
-                                                    const Text(
-                                                      "10°",
-                                                      style: TextStyle(
-                                                        color: Colors.white54,
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                            .toList(),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          Text("data"),
+                                        ],
                                       ),
                                     )
                                   : Container(
@@ -1194,6 +1233,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                               // Handle month change
                               print('Current month: $date');
                             },
+                            isJalali: true,
                           ),
                         ),
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as inh;
 import 'package:new_tab_chrome/core/utils/colors.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 import 'package:new_tab_chrome/core/widgets/pkg/calender/src/extensions/string.dart';
@@ -17,9 +18,10 @@ class JalaliTableCalendar extends StatefulWidget {
     required this.onDaySelected,
     this.onMonthChanged,
     this.headerText,
-
+    required this.isJalali,
   });
 
+  final bool isJalali;
   final Jalali? currentMonth;
   final TextStyle? headerStyle;
   final TextStyle? weekDaysStyle;
@@ -40,8 +42,24 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
   late Jalali _currentMonth;
   late List<Jalali> _visibleDates;
 
-  static const List<String> _weekDays = [
-    'شنبه', 'یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه',
+  static const List<String> _weekDaysJalali = [
+    'شنبه',
+    'یکشنبه',
+    'دوشنبه',
+    'سه‌شنبه',
+    'چهارشنبه',
+    'پنجشنبه',
+    'جمعه',
+  ];
+
+  static const List<String> _weekDaysGregorian = [
+    'Sat',
+    'Sun',
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
   ];
 
   @override
@@ -57,8 +75,7 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
   void _changeMonth(bool forward) {
     setState(() {
       final month = forward ? _currentMonth.month + 1 : _currentMonth.month - 1;
-      final year = _currentMonth.year +
-          (month > 12 ? 1 : (month < 1 ? -1 : 0));
+      final year = _currentMonth.year + (month > 12 ? 1 : (month < 1 ? -1 : 0));
       final adjustedMonth = (month - 1) % 12 + 1;
       _currentMonth = Jalali(year, adjustedMonth);
       _visibleDates = _getVisibleDates(_currentMonth);
@@ -67,19 +84,35 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
   }
 
   List<Jalali> _getVisibleDates(Jalali month) {
+    // همون کد قبلی برای شمسی
+    // برای میلادی باید جداگانه نوشته بشه
+    if (!widget.isJalali) {
+      final gDate = month.toDateTime(); // تبدیل به DateTime
+      final firstDay = DateTime(gDate.year, gDate.month, 1);
+      final paddingStart = (firstDay.weekday + 1) % 7;
+      final startDate = firstDay.subtract(Duration(days: paddingStart));
+      final totalDays = DateTime(gDate.year, gDate.month + 1, 0).day;
+
+      return List.generate(totalDays + paddingStart, (i) {
+        final date = startDate.add(Duration(days: i));
+        return Jalali.fromDateTime(date);
+      });
+    }
+
+    // حالت شمسی همون کد قبلی:
     final firstDay = Jalali(month.year, month.month, 1);
     final paddingStart = firstDay.weekDay - 1;
     final startDate = firstDay.addDays(-paddingStart);
     final daysInMonth = month.month == 12 && Jalali(month.year).isLeapYear()
         ? 30
         : month.month == 12
-        ? 29
-        : month.month <= 6
-        ? 31
-        : 30;
+            ? 29
+            : month.month <= 6
+                ? 31
+                : 30;
 
-    return List.generate(daysInMonth + paddingStart,
-            (i) => startDate.addDays(i));
+    return List.generate(
+        daysInMonth + paddingStart, (i) => startDate.addDays(i));
   }
 
   Widget _buildHeader() {
@@ -93,10 +126,12 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
           onPressed: () => _changeMonth(false),
         ),
         Text(
-          widget.headerText?.call(_currentMonth) ??
-              '${_currentMonth.formatter.mN} ${_currentMonth.year}',
-          style:
-          widget.headerStyle ?? Theme.of(context).textTheme.labelMedium,
+
+              (widget.isJalali
+                  ? '${_currentMonth.formatter.mN} ${_currentMonth.year}'
+                  : inh.DateFormat('MMMM yyyy', 'en_US')
+                      .format(_currentMonth.toDateTime())),
+          style: widget.headerStyle ?? Theme.of(context).textTheme.labelMedium,
         ),
         IconButton(
           splashRadius: 20,
@@ -109,20 +144,19 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
   }
 
   Widget _buildDaysName() {
+    final days = widget.isJalali ? _weekDaysJalali : _weekDaysGregorian;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: _weekDays.map((day) {
+      children: days.map((day) {
         return Text(
           day,
           style: widget.weekDaysStyle ??
-              Theme.of(context)
-                  .textTheme
-                  .labelMedium
-                  ?.copyWith(fontSize: 12),
+              Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 12),
         );
       }).toList(),
     );
   }
+
   Widget _buildDayBox(Jalali date, bool isSelected, bool isToday) {
     final isHoliday = date.weekDay == 7;
 
@@ -148,9 +182,9 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
       boxColor: boxColor,
       textColor: textColor,
       border: border,
+      isJalali: widget.isJalali,
     );
   }
-
 
   Widget _buildCalendar() {
     final firstDay = Jalali(_currentMonth.year, _currentMonth.month, 1);
@@ -170,8 +204,8 @@ class _JalaliTableCalendarState extends State<JalaliTableCalendar> {
       itemBuilder: (context, index) {
         if (index < skipCount) return const SizedBox();
         final date = _visibleDates[index];
-        final isSelected = widget.selectedDay != null &&
-            _isSameDay(date, widget.selectedDay!);
+        final isSelected =
+            widget.selectedDay != null && _isSameDay(date, widget.selectedDay!);
         final isToday = _isSameDay(date, Jalali.now());
 
         return _buildDayBox(date, isSelected, isToday);
@@ -203,6 +237,7 @@ class _DayBox extends StatelessWidget {
   const _DayBox({
     required this.date,
     required this.onTap,
+    required this.isJalali,
     this.boxColor,
     this.textColor,
     this.border,
@@ -212,6 +247,7 @@ class _DayBox extends StatelessWidget {
   final Color? boxColor;
   final Color? textColor;
   final BoxBorder? border;
+  final bool isJalali;
   final Function(Jalali date) onTap;
 
   @override
@@ -233,13 +269,14 @@ class _DayBox extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                date.day.toString().toFarsiNumber(),
+                isJalali
+                    ? date.day.toString().toFarsiNumber()
+                    : date.toDateTime().day.toString(),
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  fontSize: 12,
-                  color: textColor ?? Colors.white,
-                ),
+                      fontSize: 12,
+                      color: textColor ?? Colors.white,
+                    ),
               ),
-
             ),
           ),
         ),
