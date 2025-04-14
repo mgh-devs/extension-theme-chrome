@@ -1,19 +1,12 @@
 name: new_tab_chrome
 description: "A new Flutter project."
-
 publish_to: 'none'
-
 version: 1.0.0+1
-
 environment:
   sdk: ^3.5.3
-
-
 dependencies:
   flutter:
     sdk: flutter
-
-
   cupertino_icons: ^1.0.8
   get: ^4.7.2
   persian_datetime_picker: ^3.1.0
@@ -23,25 +16,14 @@ dependencies:
   build_runner: ^2.4.13
   hive_ce_generator: ^1.8.1
   intl: ^0.20.2
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
   flutter_lints: ^4.0.0
-
 flutter:
-
-
   uses-material-design: true
-
-
   assets:
     - assets/png/
-
   fonts:
     - family: vazir
       fonts:
