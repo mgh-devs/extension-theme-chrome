@@ -21,6 +21,8 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           controller.isExpanded.value = false;
+          controller.isSearchIsNotEmpty.value=false;
+          controller.cityTextEditingController.clear();
         },
         child: Row(
           children: [
@@ -804,442 +806,647 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(right: 50, left: 15, top: 60),
-                child: Column(
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: cardBox,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border(
-                                        right:
-                                            BorderSide(color: card, width: 1.5),
-                                      )),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Obx(() {
-                                            return Text(
-                                              controller.clock.value,
-                                              style: TextStyle(
-                                                color: blueLight,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 40,
+                    Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: cardBox,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                            right: BorderSide(
+                                                color: card, width: 1.5),
+                                          )),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Obx(() {
+                                                return Text(
+                                                  controller.clock.value,
+                                                  style: TextStyle(
+                                                    color: blueLight,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 40,
+                                                  ),
+                                                );
+                                              }),
+                                              const SizedBox(height: 35),
+                                              Text(
+                                                inh.DateFormat(
+                                                            'MMMM dd', 'en_US')
+                                                        .format(
+                                                            DateTime.now()) ??
+                                                    '${Jalali.now().formatter.mN} ${Jalali.now().formatter.d}',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                ),
                                               ),
-                                            );
-                                          }),
-                                          const SizedBox(height: 35),
-                                          Text(
-                                            inh.DateFormat('MMMM dd', 'en_US')
-                                                    .format(DateTime.now()) ??
-                                                '${Jalali.now().formatter.mN} ${Jalali.now().formatter.d}',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                            ),
+                                              Text(
+                                                inh.DateFormat('yyyy', 'en_US')
+                                                        .format(
+                                                            DateTime.now()) ??
+                                                    "${Jalali.now().year}",
+                                                style: TextStyle(
+                                                  color: Colors.white54,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            inh.DateFormat('yyyy', 'en_US')
-                                                    .format(DateTime.now()) ??
-                                                "${Jalali.now().year}",
-                                            style: TextStyle(
-                                              color: Colors.white54,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      color: Colors.transparent,
-                                      child: Obx(() {
-                                        return controller
-                                                .isGetWeatherLoading.value
-                                            ? CircularProgressIndicator()
-                                            : Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Row(
+                                      Expanded(
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          child: Obx(() {
+                                            return controller
+                                                    .isGetWeatherLoading.value
+                                                ? CircularProgressIndicator()
+                                                : Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
-                                                            .spaceEvenly,
+                                                            .center,
                                                     children: [
-                                                      Image.asset(
-                                                        "assets/png/cloud.png",
-                                                        width: 50,
-                                                        height: 50,
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
+                                                        children: [
+                                                          Image.asset(
+                                                            "assets/png/cloud.png",
+                                                            width: 50,
+                                                            height: 50,
+                                                          ),
+                                                          Text(
+                                                            "${controller.weather?.currentWeather?.temperature?.toStringAsFixed(0)}°",
+                                                            style: TextStyle(
+                                                              color: Colors
+                                                                  .white54,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 30,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                      Text(
-                                                        "${controller.weather?.currentWeather?.temperature?.toStringAsFixed(0)}°",
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      const Text(
+                                                        "Grab a juice! 🧃️",
                                                         style: TextStyle(
-                                                          color: Colors.white54,
+                                                          color: Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 30,
+                                                          fontSize: 12,
                                                         ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  const Text(
-                                                    "Grab a juice! 🧃️",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: "Min ",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white60,
-                                                                fontSize: 10,
-                                                              ),
-                                                            ),
-                                                            TextSpan(
-                                                              text:
-                                                                  "${controller.weather?.daily?.temperature2MMin.first.toStringAsFixed(0)}° ",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 10,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: "Max ",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white60,
-                                                                fontSize: 10,
-                                                              ),
-                                                            ),
-                                                            TextSpan(
-                                                              text:
-                                                                  "${controller.weather?.daily?.temperature2MMax.first.toStringAsFixed(0)}° ",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 10,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  MouseRegion(
-                                                    cursor: SystemMouseCursors
-                                                        .click,
-                                                    child: Obx(() {
-                                                      return GestureDetector(
-                                                        onTap: () => controller
-                                                                .isForecast
-                                                                .value =
-                                                            !controller
-                                                                .isForecast
-                                                                .value,
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 12,
-                                                                  right: 12,
-                                                                  bottom: 4,
-                                                                  top: 2),
-                                                          alignment:
-                                                              Alignment.center,
-                                                          width: 75,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: controller
-                                                                    .isForecast
-                                                                    .value
-                                                                ? buttonColor
-                                                                : Colors
-                                                                    .transparent,
-                                                            border: Border.all(
-                                                                color: divider,
-                                                                width: 1.5),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50),
-                                                          ),
-                                                          child: Row(
-                                                            children: [
-                                                              const Text(
-                                                                "Forcast",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 10,
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
+                                                        children: [
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: "Min ",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white60,
+                                                                    fontSize:
+                                                                        10,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              Icon(
-                                                                controller
+                                                                TextSpan(
+                                                                  text:
+                                                                      "${controller.weather?.daily?.temperature2MMin.first.toStringAsFixed(0)}° ",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        10,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  text: "Max ",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white60,
+                                                                    fontSize:
+                                                                        10,
+                                                                  ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      "${controller.weather?.daily?.temperature2MMax.first.toStringAsFixed(0)}° ",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        10,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      MouseRegion(
+                                                        cursor:
+                                                            SystemMouseCursors
+                                                                .click,
+                                                        child: Obx(() {
+                                                          return GestureDetector(
+                                                            onTap: (){
+                                                              controller
+                                                                  .isForecast
+                                                                  .value =
+                                                              !controller
+                                                                  .isForecast
+                                                                  .value;
+                                                              controller.isSearchIsNotEmpty.value=false;
+                                                              controller.cityTextEditingController.clear();
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      left: 12,
+                                                                      right: 12,
+                                                                      bottom: 4,
+                                                                      top: 2),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              width: 75,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: controller
                                                                         .isForecast
                                                                         .value
-                                                                    ? Icons
-                                                                        .keyboard_arrow_up_rounded
-                                                                    : Icons
-                                                                        .keyboard_arrow_down_rounded,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 12,
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }),
-                                                  )
-                                                ],
-                                              );
-                                      }),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                                child: Obx(
-                              () => controller.isForecast.value
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          top: BorderSide(
-                                              color: card, width: 1.5),
+                                                                    ? buttonColor
+                                                                    : Colors
+                                                                        .transparent,
+                                                                border: Border.all(
+                                                                    color:
+                                                                        divider,
+                                                                    width: 1.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50),
+                                                              ),
+                                                              child: Row(
+                                                                children: [
+                                                                  const Text(
+                                                                    "Forcast",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          10,
+                                                                    ),
+                                                                  ),
+                                                                  Icon(
+                                                                    controller
+                                                                            .isForecast
+                                                                            .value
+                                                                        ? Icons
+                                                                            .keyboard_arrow_up_rounded
+                                                                        : Icons
+                                                                            .keyboard_arrow_down_rounded,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    size: 12,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }),
+                                                      )
+                                                    ],
+                                                  );
+                                          }),
                                         ),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                            child: ListView.builder(
-                                              itemCount: controller.weather!.daily!.time.length-2,
-                                              scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.only(left: 4,right:4),
-                                                  child: Container(
-                                                    width: 60,
-                                                    height: 130,
-                                                    decoration: BoxDecoration(
-                                                      color: card,
-                                                      borderRadius:
-                                                          BorderRadius.circular(15),
-                                                    ),
-                                                    child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                         Text(
-                                                          controller.convertDate(controller.weather!.daily!.time[index].toString(),isJalali: true),
-                                                          style: TextStyle(
-                                                            color: Colors.white54,
-                                                            fontSize: 10,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(vertical: 2.0),
-                                                          child: Image.asset(
-                                                            "assets/png/cloud.png",
-                                                            width: 25,
-                                                            height: 25,
-                                                          ),
-                                                        ),
-                                                         Text(
-                                                          "${controller.weather?.daily?.temperature2MMax[index].toStringAsFixed(0)}°",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 12,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 2,
-                                                        ),
-                                                         Text(
-                                                          "${controller.weather?.daily?.temperature2MMin[index].toStringAsFixed(0)}°",
-                                                          style: TextStyle(
-                                                            color: Colors.white54,
-                                                            fontSize: 10,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 20,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Obx(
+                                  () => controller.isForecast.value
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              top: BorderSide(
+                                                  color: card, width: 1.5),
                                             ),
                                           ),
-                                          Text("data"),
-                                        ],
-                                      ),
-                                    )
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          top: BorderSide(
-                                              color: card, width: 1.5),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child: ListView.builder(
+                                                  itemCount: controller.weather!
+                                                          .daily!.time.length -
+                                                      2,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 4,
+                                                              right: 4),
+                                                      child: Container(
+                                                        width: 60,
+                                                        height: 130,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: card,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            const SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                            Text(
+                                                              controller.convertDate(
+                                                                  controller
+                                                                      .weather!
+                                                                      .daily!
+                                                                      .time[
+                                                                          index]
+                                                                      .toString(),
+                                                                  isJalali:
+                                                                      true),
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white54,
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          2.0),
+                                                              child:
+                                                                  Image.asset(
+                                                                "assets/png/cloud.png",
+                                                                width: 25,
+                                                                height: 25,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              "${controller.weather?.daily?.temperature2MMax[index].toStringAsFixed(0)}°",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 2,
+                                                            ),
+                                                            Text(
+                                                              "${controller.weather?.daily?.temperature2MMin[index].toStringAsFixed(0)}°",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white54,
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 100,
+                                                height: 25,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 9),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: divider),
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                child: Center(
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down_outlined,
+                                                        size: 15,
+                                                        color: icyColor,
+                                                      ),
+                                                      Expanded(
+                                                        child: TextField(
+                                                          controller: controller
+                                                              .cityTextEditingController,
+                                                          textDirection:
+                                                              TextDirection.rtl,
+                                                          style: TextStyle(
+                                                              fontSize: 10,color: icyColor,fontFamily: 'vazir'),
+                                                          decoration:
+                                                              InputDecoration(
+                                                            isDense: true,
+                                                            contentPadding:
+                                                                EdgeInsets.zero,
+                                                            border: InputBorder
+                                                                .none,
+                                                          ),
+                                                          onChanged:
+                                                              (val) async {
+                                                            if (controller
+                                                                .cityTextEditingController
+                                                                .text
+                                                                .isNotEmpty) {
+                                                              controller
+                                                                  .isSearchIsNotEmpty
+                                                                  .value = true;
+                                                              await controller.searchCity(
+                                                                  nameCity:
+                                                                      controller
+                                                                          .cityTextEditingController
+                                                                          .text);
+                                                            } else {
+                                                              controller
+                                                                  .isSearchIsNotEmpty
+                                                                  .value = false;
+                                                            }
+                                                          },
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons
+                                                            .location_on_rounded,
+                                                        size: 15,
+                                                        color: icyColor,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              top: BorderSide(
+                                                  color: card, width: 1.5),
+                                            ),
+                                          ),
+                                          child: Obx(() => controller
+                                                  .isGetEventDayLoading.value
+                                              ? Center(
+                                                  child:
+                                                      const CircularProgressIndicator())
+                                              : ListView.builder(
+                                                  itemCount: controller
+                                                          .responseEventDay
+                                                          .events
+                                                          .isNotEmpty
+                                                      ? controller
+                                                          .responseEventDay
+                                                          .events
+                                                          .length
+                                                      : 0,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8,
+                                                              right: 8,
+                                                              bottom: 5,
+                                                              top: 3),
+                                                      child: Directionality(
+                                                        textDirection:
+                                                            TextDirection.rtl,
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontFamily:
+                                                                          'vazir'),
+                                                                  text: controller
+                                                                          .responseEventDay
+                                                                          .events[
+                                                                              index]
+                                                                          .description ??
+                                                                      "",
+                                                                ),
+                                                                TextSpan(
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .red
+                                                                          .shade700,
+                                                                      fontFamily:
+                                                                          'vazir'),
+                                                                  text: controller
+                                                                          .responseEventDay
+                                                                          .events[
+                                                                              index]
+                                                                          .isHoliday!
+                                                                      ? "(تعطیل)"
+                                                                      : "",
+                                                                ),
+                                                              ]),
+                                                        ),
+                                                      ),
+                                                      // child: Text(
+                                                      //   controller
+                                                      //           .responseEventDay
+                                                      //           .events[index]
+                                                      //           .description ??
+                                                      //       "",
+                                                      //   textAlign: TextAlign.right,
+                                                      //   style: const TextStyle(
+                                                      //     color: Colors.white,
+                                                      //   ),
+                                                      // ),
+                                                    );
+                                                  },
+                                                )),
+                                        ),
+                                ))
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: cardBox,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Obx(
+                              () => JalaliTableCalendar(
+                                currentMonth: Jalali.now(),
+                                headerStyle:
+                                    const TextStyle(color: Colors.white),
+                                weekDaysStyle: const TextStyle(
+                                    fontSize: 12, color: Colors.white),
+                                selectedDay: controller.s.value,
+                                onDaySelected: (date) {
+                                  print('Selected date: $date');
+                                  controller.s.value = date;
+                                  controller.getEventDay(
+                                    year: date.year.toString(),
+                                    month: date.month.toString(),
+                                    day: date.day.toString(),
+                                  );
+                                },
+                                headerText: (date) {
+                                  return '${date.formatter.mN} ${date.year}'
+                                      .toFarsiNumber();
+                                },
+                                onMonthChanged: (date) {
+                                  // Handle month change
+                                  print('Current month: $date');
+                                },
+                                isJalali: true,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                    Obx(
+                      () => Visibility(
+                        visible: controller.isSearchIsNotEmpty.value,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 100.0),
+                            child: Container(
+                              width: 250,
+                              height: 100,
+                              color: card,
+                              child: Obx(
+                                () => controller.isSearchLoading.value
+                                    ? CircularProgressIndicator()
+                                    : Obx(
+                                        () => ListView.builder(
+                                          itemCount: controller.locationModel
+                                              .value.results.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: GestureDetector(
+                                                onTap: () async {
+                                                  await controller.getWeather(
+                                                      lat: controller
+                                                              .locationModel
+                                                              .value
+                                                              .results[index]
+                                                              .geometry
+                                                              ?.lat
+                                                              .toString() ??
+                                                          "",
+                                                      long: controller
+                                                              .locationModel
+                                                              .value
+                                                              .results[index]
+                                                              .geometry
+                                                              ?.lng
+                                                              .toString() ??
+                                                          "");
+                                                  controller.isForecast.value=false;
+                                                  controller.isSearchIsNotEmpty.value=false;
+                                                },
+                                                child: Text(
+                                                  controller
+                                                          .locationModel
+                                                          .value
+                                                          .results[index]
+                                                          .formatted ??
+                                                      "",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 9,
+                                                      fontFamily: 'vazir'),
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
-                                      child: Obx(() => controller
-                                              .isGetEventDayLoading.value
-                                          ? Center(
-                                              child:
-                                                  const CircularProgressIndicator())
-                                          : ListView.builder(
-                                              itemCount: controller
-                                                      .responseEventDay
-                                                      .events
-                                                      .isNotEmpty
-                                                  ? controller.responseEventDay
-                                                      .events.length
-                                                  : 0,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8,
-                                                          right: 8,
-                                                          bottom: 5,
-                                                          top: 3),
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        TextDirection.rtl,
-                                                    child: RichText(
-                                                      text: TextSpan(children: [
-                                                        TextSpan(
-                                                          style: TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  'vazir'),
-                                                          text: controller
-                                                                  .responseEventDay
-                                                                  .events[index]
-                                                                  .description ??
-                                                              "",
-                                                        ),
-                                                        TextSpan(
-                                                          style: TextStyle(
-                                                              fontSize: 12,
-                                                              color: Colors
-                                                                  .red.shade700,
-                                                              fontFamily:
-                                                                  'vazir'),
-                                                          text: controller
-                                                                  .responseEventDay
-                                                                  .events[index]
-                                                                  .isHoliday!
-                                                              ? "(تعطیل)"
-                                                              : "",
-                                                        ),
-                                                      ]),
-                                                    ),
-                                                  ),
-                                                  // child: Text(
-                                                  //   controller
-                                                  //           .responseEventDay
-                                                  //           .events[index]
-                                                  //           .description ??
-                                                  //       "",
-                                                  //   textAlign: TextAlign.right,
-                                                  //   style: const TextStyle(
-                                                  //     color: Colors.white,
-                                                  //   ),
-                                                  // ),
-                                                );
-                                              },
-                                            )),
-                                    ),
-                            ))
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: cardBox,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Obx(
-                          () => JalaliTableCalendar(
-                            currentMonth: Jalali.now(),
-                            headerStyle: const TextStyle(color: Colors.white),
-                            weekDaysStyle: const TextStyle(
-                                fontSize: 12, color: Colors.white),
-                            selectedDay: controller.s.value,
-                            onDaySelected: (date) {
-                              print('Selected date: $date');
-                              controller.s.value = date;
-                              controller.getEventDay(
-                                year: date.year.toString(),
-                                month: date.month.toString(),
-                                day: date.day.toString(),
-                              );
-                            },
-                            headerText: (date) {
-                              return '${date.formatter.mN} ${date.year}'
-                                  .toFarsiNumber();
-                            },
-                            onMonthChanged: (date) {
-                              // Handle month change
-                              print('Current month: $date');
-                            },
-                            isJalali: true,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
                     ),
                   ],
                 ),

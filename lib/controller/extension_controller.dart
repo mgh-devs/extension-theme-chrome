@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_tab_chrome/core/services/hive_service.dart';
 import 'package:new_tab_chrome/models/response_event_day_model.dart';
+import 'package:new_tab_chrome/models/response_location_model.dart';
 import 'package:new_tab_chrome/models/response_weather_model.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:intl/intl.dart' as inh;
@@ -44,18 +45,21 @@ class ExtensionController extends GetxController {
   var isForecast = false.obs;
   var isGetEventDayLoading = false.obs;
   var isGetWeatherLoading = false.obs;
+  var isSearchLoading = false.obs;
   Rx<Jalali> s = Jalali.now().obs;
   ResponseEventDayModel responseEventDay =
       ResponseEventDayModel(isHoliday: false, events: []);
   ResponseWeatherModel? weather;
   RxList<ToDoListModel> tasks=<ToDoListModel>[].obs;
   Rx<Color> selectedColor=Colors.red.obs;
+  RxBool isSearchIsNotEmpty=false.obs;
   final  titleTextEditingController=TextEditingController();
   final  descriptionTextEditingController=TextEditingController();
+  final  cityTextEditingController=TextEditingController();
   RxList<int>selectedShowDescription=<int>[].obs;
    RxString clock=''.obs;
   late Timer _timer;
-
+   Rx<ResponseLocationModel> locationModel=ResponseLocationModel(results: []).obs;
 
   void toggle() => isExpanded.value = !isExpanded.value;
 
@@ -76,6 +80,7 @@ class ExtensionController extends GetxController {
       isGetEventDayLoading.value = false;
     }
   }
+
   Future<void> getWeather({
     required String lat,
     required String long,
@@ -89,6 +94,27 @@ class ExtensionController extends GetxController {
       isGetWeatherLoading.value = false;
     } on DioException catch (e) {
       isGetWeatherLoading.value = false;
+    }
+  }
+  Future<void> searchCity({
+    required String nameCity,
+  }) async {
+    isSearchLoading.value = true;
+    try {
+      var response = await _dio.get(
+        "https://api.opencagedata.com/geocode/v1/json?q=$nameCity&key=083dcfeff4e84adc9b17892210903a8e",
+      );
+      if(response.data['total_results']>0){
+        locationModel.value=ResponseLocationModel.fromJson(response.data);
+
+
+      }else{
+
+      }
+
+      isSearchLoading.value = false;
+    } on DioException catch (e) {
+      isSearchLoading.value = false;
     }
   }
 
