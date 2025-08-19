@@ -22,10 +22,12 @@ class ExtensionController extends GetxController {
     );
     getAllTasks();
     clock.value = _formatDateTime(DateTime.now());
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    _timer =
+        Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     getWeather(lat: '31.8565792', long: '54.3296297');
     super.onInit();
   }
+
   @override
   void dispose() {
     _timer.cancel();
@@ -50,16 +52,18 @@ class ExtensionController extends GetxController {
   ResponseEventDayModel responseEventDay =
       ResponseEventDayModel(isHoliday: false, events: []);
   ResponseWeatherModel? weather;
-  RxList<ToDoListModel> tasks=<ToDoListModel>[].obs;
-  Rx<Color> selectedColor=Colors.red.obs;
-  RxBool isSearchIsNotEmpty=false.obs;
-  final  titleTextEditingController=TextEditingController();
-  final  descriptionTextEditingController=TextEditingController();
-  final  cityTextEditingController=TextEditingController();
-  RxList<int>selectedShowDescription=<int>[].obs;
-   RxString clock=''.obs;
+  RxList<ToDoListModel> tasks = <ToDoListModel>[].obs;
+  Rx<Color> selectedColor = Colors.red.obs;
+  RxBool isSearchIsNotEmpty = false.obs;
+  final titleTextEditingController = TextEditingController();
+  final descriptionTextEditingController = TextEditingController();
+  final cityTextEditingController = TextEditingController();
+  final searchTextController = TextEditingController();
+  RxList<int> selectedShowDescription = <int>[].obs;
+  RxString clock = ''.obs;
   late Timer _timer;
-   Rx<ResponseLocationModel> locationModel=ResponseLocationModel(results: []).obs;
+  Rx<ResponseLocationModel> locationModel =
+      ResponseLocationModel(results: []).obs;
 
   void toggle() => isExpanded.value = !isExpanded.value;
 
@@ -90,12 +94,13 @@ class ExtensionController extends GetxController {
       var response = await _dio.get(
         "https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$long&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto",
       );
-     weather=ResponseWeatherModel.fromJson(response.data);
+      weather = ResponseWeatherModel.fromJson(response.data);
       isGetWeatherLoading.value = false;
     } on DioException catch (e) {
       isGetWeatherLoading.value = false;
     }
   }
+
   Future<void> searchCity({
     required String nameCity,
   }) async {
@@ -104,13 +109,9 @@ class ExtensionController extends GetxController {
       var response = await _dio.get(
         "https://api.opencagedata.com/geocode/v1/json?q=$nameCity&key=083dcfeff4e84adc9b17892210903a8e",
       );
-      if(response.data['total_results']>0){
-        locationModel.value=ResponseLocationModel.fromJson(response.data);
-
-
-      }else{
-
-      }
+      if (response.data['total_results'] > 0) {
+        locationModel.value = ResponseLocationModel.fromJson(response.data);
+      } else {}
 
       isSearchLoading.value = false;
     } on DioException catch (e) {
@@ -118,15 +119,14 @@ class ExtensionController extends GetxController {
     }
   }
 
-  void getAllTasks(){
+  void getAllTasks() {
     tasks.assignAll(HiveServices.getAllTasks);
   }
 
   void _getTime() {
     final DateTime now = DateTime.now();
     final String formattedDateTime = _formatDateTime(now);
-      clock.value = formattedDateTime;
-
+    clock.value = formattedDateTime;
   }
 
   String _formatDateTime(DateTime dateTime) {
@@ -161,8 +161,8 @@ class ExtensionController extends GetxController {
   }
 
   String _convertToPersianNumber(int number) {
-    const english = ['0','1','2','3','4','5','6','7','8','9'];
-    const persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
 
     return number
         .toString()
@@ -170,5 +170,4 @@ class ExtensionController extends GetxController {
         .map((e) => persian[english.indexOf(e)])
         .join();
   }
-
 }

@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_tab_chrome/controller/extension_controller.dart';
@@ -727,7 +727,22 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                 color: Colors.white,
                               ),
                             ),
-                            const Expanded(child: TextField()),
+                            Expanded(
+                              child: TextField(
+                                controller: controller.searchTextController,
+                                onSubmitted: (value) {
+                                  final searchUrl = 'https://www.google.com/search?q=${Uri.encodeComponent(value)}';
+                                  html.window.open(searchUrl, '_blank'); // نیاز به import 'dart:html' داره
+                                },
+
+                                textInputAction: TextInputAction.search, // تغییر آیکون دکمه‌ی کیبورد به "Search"
+                                decoration: const InputDecoration(
+                                  hintText: "جستجو...",
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
                               child: Icon(
