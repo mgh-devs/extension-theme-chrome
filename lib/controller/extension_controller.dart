@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
-
+import 'dart:html' as html;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,11 +10,16 @@ import 'package:new_tab_chrome/models/response_location_model.dart';
 import 'package:new_tab_chrome/models/response_weather_model.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:intl/intl.dart' as inh;
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../models/response_todo_list_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:typed_data';
 
 class ExtensionController extends GetxController {
   @override
   void onInit() {
+    searchTextController.addListener(_updateTextAlign);
     getEventDay(
       year: Jalali.now().year.toString(),
       month: Jalali.now().month.toString(),
@@ -31,6 +36,8 @@ class ExtensionController extends GetxController {
   @override
   void dispose() {
     _timer.cancel();
+    searchTextController.removeListener(_updateTextAlign);
+    searchTextController.dispose();
     super.dispose();
   }
 
@@ -64,6 +71,76 @@ class ExtensionController extends GetxController {
   late Timer _timer;
   Rx<ResponseLocationModel> locationModel =
       ResponseLocationModel(results: []).obs;
+  var textAlign = TextAlign.end.obs;
+  var isLoading = false.obs;
+
+
+
+
+
+
+  final stt.SpeechToText _speech = stt.SpeechToText();
+
+  var isListening = false.obs;
+
+
+  Future<void> listenSmart() async {
+    if (isListening.value) {
+      await _speech.stop();
+      isListening.value = false;
+      return;
+    }
+
+    bool available = await _speech.initialize();
+
+
+    isListening.value = true;
+
+    String? enResult;
+    String? faResult;
+
+    /// اول فارسی
+    await _speech.listen(
+      localeId: "fa-IR",
+      onResult: (val) {
+        faResult = val.recognizedWords;
+      },
+    );
+
+    await Future.delayed(Duration(seconds: 4));
+    await _speech.stop();
+
+    /// کمی صبر کنیم تا stop کامل بشه
+    await Future.delayed(Duration(milliseconds: 500));
+
+    /// بعد انگلیسی
+    await _speech.listen(
+      localeId: "en-US",
+      onResult: (val) {
+        enResult = val.recognizedWords;
+      },
+    );
+
+    await Future.delayed(Duration(seconds: 3));
+    await _speech.stop();
+
+    // انتخاب بهترین نتیجه
+    if (faResult != null && faResult!.trim().isNotEmpty) {
+      searchTextController.text = faResult!;
+      search(searchTextController.text);
+    } else if (enResult != null && enResult!.trim().isNotEmpty) {
+      searchTextController.text = enResult!;
+      search(searchTextController.text);
+    } else {
+
+    }
+
+    isListening.value = false;
+  }
+
+
+
+
 
   void toggle() => isExpanded.value = !isExpanded.value;
 
@@ -170,4 +247,25 @@ class ExtensionController extends GetxController {
         .map((e) => persian[english.indexOf(e)])
         .join();
   }
+  void _updateTextAlign() {
+    if (searchTextController.text.isEmpty) {
+      textAlign.value = TextAlign.start;
+    } else {
+      final firstChar = searchTextController.text.characters.first;
+      final isArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(firstChar);
+      textAlign.value = isArabic ? TextAlign.right : TextAlign.left;
+    }
+  }
+
+  void search(String value) {
+    final searchUrl =
+        'https://www.google.com/search?q=${Uri.encodeComponent(value)}';
+    html.window.open(searchUrl, '_self');
+  }
+
+
+
+
 }
+
+

@@ -17,6 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Vazir', // فونت پیش‌فرض کل برنامه
+      ),
       initialBinding: InitialBindings(),
       home: NewTabPage(),
     );

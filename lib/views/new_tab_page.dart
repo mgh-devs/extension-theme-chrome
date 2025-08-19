@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_tab_chrome/controller/extension_controller.dart';
@@ -9,9 +9,14 @@ import 'package:new_tab_chrome/core/widgets/pkg/calender/src/extensions/string.d
 import 'package:new_tab_chrome/models/response_todo_list_model.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:intl/intl.dart' as inh;
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../core/widgets/pkg/calender/src/table_calendar_jalali.dart';
 
 class NewTabPage extends GetResponsiveView<ExtensionController> {
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _text = "روی دکمه میکروفون بزن و صحبت کن...";
+  double _confidence = 1.0;
   @override
   Widget? desktop() {
     // TODO: implement desktop
@@ -704,7 +709,7 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    controller.getAllTasks();
+                                    controller.search(controller.searchTextController.text);
                                   },
                                   child: const Icon(
                                     Icons.search,
@@ -713,35 +718,43 @@ class NewTabPage extends GetResponsiveView<ExtensionController> {
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Icon(
-                                Icons.mic,
-                                color: Colors.white,
-                              ),
+                            Obx(
+                               () {
+                                return GestureDetector(
+                                  onTap:(){
+                                    controller.listenSmart();
+                                  },
+                                  child:  Icon(
+                                    controller.isListening.value ? Icons.stop : Icons.mic,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }
                             ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Icon(
-                                Icons.camera,
-                                color: Colors.white,
-                              ),
-                            ),
+                            // const Padding(
+                            //   padding: EdgeInsets.symmetric(horizontal: 15),
+                            //   child: Icon(
+                            //     Icons.camera,
+                            //     color: Colors.white,
+                            //   ),
+                            // ),
                             Expanded(
-                              child: TextField(
-                                controller: controller.searchTextController,
-                                onSubmitted: (value) {
-                                  final searchUrl = 'https://www.google.com/search?q=${Uri.encodeComponent(value)}';
-                                  html.window.open(searchUrl, '_blank'); // نیاز به import 'dart:html' داره
-                                },
-
-                                textInputAction: TextInputAction.search, // تغییر آیکون دکمه‌ی کیبورد به "Search"
-                                decoration: const InputDecoration(
-                                  hintText: "جستجو...",
-                                  border: InputBorder.none,
+                              child: Obx(
+                                    () => TextField(
+                                  controller: controller.searchTextController,
+                                  onSubmitted: controller.search,
+                                  style: TextStyle(color: Colors.white, fontFamily: "vazir"),
+                                  textInputAction: TextInputAction.search,
+                                  textAlign: controller.textAlign.value,
+                                  decoration: const InputDecoration(
+                                    hintText: "...جستجو",
+                                    hintStyle: TextStyle(color: Colors.white, fontFamily: "vazir",fontSize: 14),
+                                    border: InputBorder.none,
+                                  ),
                                 ),
                               ),
                             ),
+
 
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),

@@ -16,6 +16,8 @@ dependencies:
   build_runner: ^2.4.13
   hive_ce_generator: ^1.8.1
   intl: ^0.20.2
+  http: ^1.5.0
+  speech_to_text: ^7.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
